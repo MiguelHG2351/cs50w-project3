@@ -1,0 +1,84 @@
+{% extends 'orders/base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'orders/style.css' %}">
+<title>Título</title>
+{% endblock %}
+
+{% block body %}
+<header class="header-main">
+    <div class="header-menu">
+        <button class="btn-mobile-menu">
+            <img src="{% static 'orders/icons/menu-logo.svg' %}" alt="Menu">
+        </button>
+    </div>
+    <div class="header-location">
+        <p>
+            <span>
+                <img src="{% static 'orders/icons/location-icon.svg' %}" alt="icono de location">
+            </span>
+            California, US
+            <span>
+                <img src="{% static 'orders/icons/arrow_down.svg' %}" alt="icono de location">
+            </span>
+        </p>
+    </div>
+    <div class="header-profile">
+        <img class="profile-image" src="https://randomuser.me/api/portraits/men/89.jpg" alt="Jimmie King" width="42" >
+    </div>
+</header>
+<main>
+    <section class="fast-pizza">
+        <div class="fast-pizza-info">
+            <h2 class="fast-pizza-title">The fastest in Delivery <span>Food</span></h2>
+            <button class="fast-pizza-btn">Order now</button>
+        </div>
+        <img src="{% static 'orders/images/pizza-draw.svg' %}" alt="">
+    </section>
+    <section class="categories">
+        <ul class="categories-list">
+            <li class="categories-item">
+                <span class="categories-item-image">
+                    <img src="{% static 'orders/images/burger-item.png' %}" alt="">
+                </span>
+                <span class="categories-item-name">Dinner</span>
+            </li>
+            <li class="categories-item">
+                <span class="categories-item-image">
+                    <img src="{% static 'orders/images/pizza-item.png' %}" alt="">
+                </span>
+                <span class="categories-item-name">Pizza</span>
+            </li>
+            <li class="categories-item">
+                <span class="categories-item-image">
+                    <img src="{% static 'orders/images/salad-item.png' %}" alt="">
+                </span>
+                <span class="categories-item-name">Salad</span>
+            </li>
+            <li class="categories-item">
+                <span class="categories-item-image">
+                    <img src="{% static 'orders/images/salad-item.png' %}" alt="">
+                </span>
+                <span class="categories-item-name">Pasta</span>
+            </li>
+        </ul>
+        <section class="popular-now">
+            <h3>Popular Now</h3>
+            <div class="popular-now">
+                <div class="popular-item">
+                    <img src="https://images.immediate.co.uk/production/volatile/sites/30/2014/05/Epic-summer-salad-hub-2646e6e.jpg" alt="Ensalada" width="256">
+                    <div class="popular-item-info">
+                        <h4>Ensalada aguacate</h4>
+                        <p>Aguacate con sal 🥑</p>
+                        <div class="popular-price">
+                            <span class="dollar-symbol"></span>
+                            54
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+</main>
+{% endblock body %}
