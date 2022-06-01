@@ -1,4 +1,5 @@
 {% extends 'orders/base.html' %}
+{% load poll_extras %}
 {% load static %}
 
 {% block head %}
@@ -37,6 +38,7 @@
         <img src="{% static 'orders/images/pizza-draw.svg' %}" alt="">
     </section>
     <section class="categories">
+        <h3>Categories</h3>
         <ul class="categories-list">
             <li class="categories-item">
                 <span class="categories-item-image">
@@ -49,6 +51,12 @@
                     <img src="{% static 'orders/images/pizza-item.png' %}" alt="">
                 </span>
                 <span class="categories-item-name">Pizza</span>
+            </li>
+            <li class="categories-item">
+                <span class="categories-item-image">
+                    <img src="{% static 'orders/images/pizza-item.png' %}" alt="">
+                </span>
+                <span class="categories-item-name">Subs</span>
             </li>
             <li class="categories-item">
                 <span class="categories-item-image">
@@ -65,16 +73,135 @@
         </ul>
         <section class="popular-now">
             <h3>Popular Now</h3>
-            <div class="popular-now">
+            <div class="popular-list">
+                {% for food_info in popular_foods %}
+                {% with food_info.food_id as food %}
                 <div class="popular-item">
-                    <img src="https://images.immediate.co.uk/production/volatile/sites/30/2014/05/Epic-summer-salad-hub-2646e6e.jpg" alt="Ensalada" width="256">
-                    <div class="popular-item-info">
-                        <h4>Ensalada aguacate</h4>
-                        <p>Aguacate con sal 🥑</p>
-                        <div class="popular-price">
-                            <span class="dollar-symbol"></span>
-                            54
+                    <div class="popular-item-image">
+                        <div class="popular-item-categories">
+                            <span>{{ food.price_type.capitalize }}</span>
                         </div>
+                        <img class="popular-item-img" src="{{ food.image.url }}" alt="Ensalada" width="128">
+                    </div>
+                    <div class="popular-item-info">
+                        <h4 title="{{food.food_name}}">{{food.food_name}}</h4>
+                        <p>{{food.description}}</p>
+                        <p class="popular-price">
+                            <span class="dollar-symbol">
+                                <img src="{% static 'orders/icons/money.svg' %}" alt="">
+                            </span>
+                            {{food.base_price}}
+                        </p>
+                    </div>
+                </div>
+                {% endwith %}
+                {% endfor %}
+            </div>
+        </section>
+        <section class="popular-now">
+            <h3>Pizza</h3>
+            <div class="popular-list">
+                {% for food in foods %}
+                {% if  food.type_food == 'pizza' %}
+                <div class="popular-item">
+                    <div class="popular-item-image">
+                        <div class="popular-item-categories">
+                            <span>{{ food.price_type.capitalize }}</span>
+                        </div>
+                        <img class="popular-item-img" src="{{ food.image.url }}" alt="Ensalada" width="128">
+                    </div>
+                    <div class="popular-item-info">
+                        <h4 title="{{food.food_name}}">{{ food.food_name }}</h4>
+                        <p>{{food.description}}</p>
+                        <p class="popular-price">
+                            <span class="dollar-symbol">
+                                <img src="{% static 'orders/icons/money.svg' %}" alt="Valor en dolar">
+                            </span>
+                            {{food.base_price | split_price}}
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </section>
+        <section class="popular-now">
+            <h3>Salads</h3>
+            <div class="popular-list">
+                {% for food in foods %}
+                {% if food.type_food == 'salad' %}
+                <div class="popular-item">
+                    <div class="popular-item-image">
+                        <div class="popular-item-categories">
+                            <span>{{ food.price_type.capitalize }}</span>
+                        </div>
+                        <img class="popular-item-img" src="{{ food.image.url }}" alt="Ensalada" width="128">
+                    </div>
+                    <div class="popular-item-info">
+                        <h4 title="{{food.food_name}}">{{food.food_name}}</h4>
+                        <p>{{food.description}}</p>
+                        <p class="popular-price">
+                            <span class="dollar-symbol">
+                                <img src="{% static 'orders/icons/money.svg' %}" alt="">
+                            </span>
+                            {{ food.base_price }}
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </section>
+        <section class="popular-now">
+            <h3>Subs</h3>
+            <div class="popular-list">
+                <div class="popular-item">
+                    <img class="popular-item-img" src="https://images.immediate.co.uk/production/volatile/sites/30/2014/05/Epic-summer-salad-hub-2646e6e.jpg" alt="Ensalada" width="128">
+                    <div class="popular-item-info">
+                        <h4>Ensalada de aguacate</h4>
+                        <p>Aguacate con sal 🥑</p>
+                        <p class="popular-price">
+                            <span class="dollar-symbol">
+                                <img src="{% static 'orders/icons/money.svg' %}" alt="">
+                            </span>
+                            54
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="popular-now">
+            <h3>Dinners</h3>
+            <div class="popular-list">
+                <div class="popular-item">
+                    <img class="popular-item-img" src="https://images.immediate.co.uk/production/volatile/sites/30/2014/05/Epic-summer-salad-hub-2646e6e.jpg" alt="Ensalada" width="128">
+                    <div class="popular-item-info">
+                        <h4>Ensalada de aguacate</h4>
+                        <p>Aguacate con sal 🥑</p>
+                        <p class="popular-price">
+                            <span class="dollar-symbol">
+                                <img src="{% static 'orders/icons/money.svg' %}" alt="">
+                            </span>
+                            54
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="popular-now">
+            <h3>Pasta</h3>
+            <div class="popular-list">
+                <div class="popular-item">
+                    <img class="popular-item-img" src="https://images.immediate.co.uk/production/volatile/sites/30/2014/05/Epic-summer-salad-hub-2646e6e.jpg" alt="Ensalada" width="128">
+                    <div class="popular-item-info">
+                        <h4>Ensalada de aguacate</h4>
+                        <p>Aguacate con sal 🥑</p>
+                        <p class="popular-price">
+                            <span class="dollar-symbol">
+                                <img src="{% static 'orders/icons/money.svg' %}" alt="">
+                            </span>
+                            54
+                        </p>
                     </div>
                 </div>
             </div>
