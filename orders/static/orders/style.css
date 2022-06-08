@@ -77,8 +77,12 @@ body {
     gap: 0 2px;
 }
 
-.categories-item {
+.categories-item-container {
     list-style: none;
+}
+
+.categories-item {
+    text-decoration: none;
     display: flex;
     gap: 0 6px;
     padding: .5rem 1rem;
@@ -121,6 +125,8 @@ body {
     overflow: hidden;
     flex-shrink: 0;
     cursor: pointer;
+    text-decoration: none;
+    color: #000;
 }
 
 .popular-item-image {
@@ -160,6 +166,9 @@ body {
 
 .popular-item-info p {
     color: #6e6e6e;
+    max-width: 16ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .popular-price {

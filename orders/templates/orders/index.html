@@ -42,35 +42,45 @@
     <section class="categories">
         <h3>Categories</h3>
         <ul class="categories-list">
-            <li class="categories-item">
-                <span class="categories-item-image">
-                    <img src="{% static 'orders/images/burger-item.png' %}" alt="">
-                </span>
-                <span class="categories-item-name">Dinner</span>
+            <li class="categories-item-container">
+                <a href="/orders?type=dinner" class="categories-item">
+                    <span class="categories-item-image">
+                        <img src="{% static 'orders/images/burger-item.png' %}" alt="">
+                    </span>
+                    <span class="categories-item-name">Dinner</span>
+                </a>
             </li>
-            <li class="categories-item">
-                <span class="categories-item-image">
-                    <img src="{% static 'orders/images/pizza-item.png' %}" alt="">
-                </span>
-                <span class="categories-item-name">Pizza</span>
+            <li class="categories-item-container">
+                <a href="/orders?type=pizza" class="categories-item">
+                    <span class="categories-item-image">
+                        <img src="{% static 'orders/images/pizza-item.png' %}" alt="">
+                    </span>
+                    <span class="categories-item-name">Pizza</span>
+                </a>
             </li>
-            <li class="categories-item">
-                <span class="categories-item-image">
-                    <img src="{% static 'orders/images/pizza-item.png' %}" alt="">
-                </span>
-                <span class="categories-item-name">Subs</span>
+            <li class="categories-item-container">
+                <a href="/orders?type=subs" class="categories-item">
+                    <span class="categories-item-image">
+                        <img src="{% static 'orders/images/pizza-item.png' %}" alt="">
+                    </span>
+                    <span class="categories-item-name">Subs</span>
+                </a>
             </li>
-            <li class="categories-item">
-                <span class="categories-item-image">
-                    <img src="{% static 'orders/images/salad-item.png' %}" alt="">
-                </span>
-                <span class="categories-item-name">Salad</span>
+            <li class="categories-item-container">
+                <a href="/orders?type=salad" class="categories-item">
+                    <span class="categories-item-image">
+                        <img src="{% static 'orders/images/salad-item.png' %}" alt="">
+                    </span>
+                    <span class="categories-item-name">Salad</span>
+                </a>
             </li>
-            <li class="categories-item">
-                <span class="categories-item-image">
-                    <img src="{% static 'orders/images/salad-item.png' %}" alt="">
-                </span>
-                <span class="categories-item-name">Pasta</span>
+            <li class="categories-item-container">
+                <a href="/orders?type=pasta" class="categories-item">
+                    <span class="categories-item-image">
+                        <img src="{% static 'orders/images/salad-item.png' %}" alt="">
+                    </span>
+                    <span class="categories-item-name">Pasta</span>
+                </a>
             </li>
         </ul>
         <section class="popular-now">
@@ -78,7 +88,7 @@
             <div class="popular-list">
                 {% for food_info in popular_foods %}
                 {% with food_info.food_id as food %}
-                <div class="popular-item">
+                <a class="popular-item" href="/orders?food_id={{food.id}}">
                     <div class="popular-item-image">
                         <div class="popular-item-categories">
                             <span>{{ food.price_type.capitalize }}</span>
@@ -87,7 +97,7 @@
                     </div>
                     <div class="popular-item-info">
                         <h4 title="{{food.food_name}}">{{food.food_name}}</h4>
-                        <p>{{food.description}}</p>
+                        <p title="{{food.description}}">{{food.description}}</p>
                         <p class="popular-price">
                             <span class="dollar-symbol">
                                 <img src="{% static 'orders/icons/money.svg' %}" alt="">
@@ -95,7 +105,7 @@
                             {{food.base_price}}
                         </p>
                     </div>
-                </div>
+                </a>
                 {% endwith %}
                 {% endfor %}
             </div>
@@ -105,7 +115,7 @@
             <div class="popular-list">
                 {% for food in foods %}
                 {% if  food.type_food == 'pizza' %}
-                <div class="popular-item">
+                <a class="popular-item" href="/orders?food_id={{food.id}}">
                     <div class="popular-item-image">
                         <div class="popular-item-categories">
                             <span>{{ food.price_type.capitalize }}</span>
@@ -114,7 +124,7 @@
                     </div>
                     <div class="popular-item-info">
                         <h4 title="{{food.food_name}}">{{ food.food_name }}</h4>
-                        <p>{{food.description}}</p>
+                        <p title="{{food.description}}">{{food.description}}</p>
                         <p class="popular-price">
                             <span class="dollar-symbol">
                                 <img src="{% static 'orders/icons/money.svg' %}" alt="Valor en dolar">
@@ -122,7 +132,7 @@
                             {{food.base_price | split_price}}
                         </p>
                     </div>
-                </div>
+                </a>
                 {% endif %}
                 {% endfor %}
             </div>
@@ -132,7 +142,7 @@
             <div class="popular-list">
                 {% for food in foods %}
                 {% if food.type_food == 'salad' %}
-                <div class="popular-item">
+                <a class="popular-item" href="/orders?food_id={{food.id}}">
                     <div class="popular-item-image">
                         <div class="popular-item-categories">
                             <span>{{ food.price_type.capitalize }}</span>
@@ -141,7 +151,7 @@
                     </div>
                     <div class="popular-item-info">
                         <h4 title="{{food.food_name}}">{{food.food_name}}</h4>
-                        <p>{{food.description}}</p>
+                        <p title="{{food.description}}">{{food.description}}</p>
                         <p class="popular-price">
                             <span class="dollar-symbol">
                                 <img src="{% static 'orders/icons/money.svg' %}" alt="">
@@ -149,7 +159,7 @@
                             {{ food.base_price }}
                         </p>
                     </div>
-                </div>
+                </a>
                 {% endif %}
                 {% endfor %}
             </div>
@@ -159,7 +169,7 @@
             <div class="popular-list">
                 {% for food in foods %}
                 {% if  food.type_food == 'subs' %}
-                <div class="popular-item">
+                <a class="popular-item" href="/orders?food_id={{food.id}}">
                     <div class="popular-item-image">
                         <div class="popular-item-categories">
                             <span>{{ food.price_type.capitalize }}</span>
@@ -168,7 +178,7 @@
                     </div>
                     <div class="popular-item-info">
                         <h4 title="{{food.food_name}}">{{ food.food_name }}</h4>
-                        <p>{{food.description}}</p>
+                        <p title="{{food.description}}">{{food.description}}</p>
                         <p class="popular-price">
                             <span class="dollar-symbol">
                                 <img src="{% static 'orders/icons/money.svg' %}" alt="Valor en dolar">
@@ -176,7 +186,7 @@
                             {{food.base_price | split_price}}
                         </p>
                     </div>
-                </div>
+                </a>
                 {% endif %}
                 {% endfor %}
             </div>
@@ -186,7 +196,7 @@
             <div class="popular-list">
                 {% for food in foods %}
                 {% if  food.type_food == 'dinner' %}
-                <div class="popular-item">
+                <a class="popular-item" href="/orders?food_id={{food.id}}">
                     <div class="popular-item-image">
                         <div class="popular-item-categories">
                             <span>{{ food.price_type.capitalize }}</span>
@@ -195,7 +205,7 @@
                     </div>
                     <div class="popular-item-info">
                         <h4 title="{{food.food_name}}">{{ food.food_name }}</h4>
-                        <p>{{food.description}}</p>
+                        <p title="{{food.description}}">{{food.description}}</p>
                         <p class="popular-price">
                             <span class="dollar-symbol">
                                 <img src="{% static 'orders/icons/money.svg' %}" alt="Valor en dolar">
@@ -203,7 +213,7 @@
                             {{food.base_price | split_price}}
                         </p>
                     </div>
-                </div>
+                </a>
                 {% endif %}
                 {% endfor %}
             </div>
@@ -213,7 +223,7 @@
             <div class="popular-list">
                 {% for food in foods %}
                 {% if  food.type_food == 'pasta' %}
-                <div class="popular-item">
+                <a class="popular-item" href="/orders?food_id={{food.id}}">
                     <div class="popular-item-image">
                         <div class="popular-item-categories">
                             <span>{{ food.price_type.capitalize }}</span>
@@ -222,7 +232,7 @@
                     </div>
                     <div class="popular-item-info">
                         <h4 title="{{food.food_name}}">{{ food.food_name }}</h4>
-                        <p>{{food.description}}</p>
+                        <p title="{{food.description}}">{{food.description}}</p>
                         <p class="popular-price">
                             <span class="dollar-symbol">
                                 <img src="{% static 'orders/icons/money.svg' %}" alt="Valor en dolar">
@@ -230,7 +240,7 @@
                             {{food.base_price | split_price}}
                         </p>
                     </div>
-                </div>
+                </a>
                 {% endif %}
                 {% endfor %}
             </div>

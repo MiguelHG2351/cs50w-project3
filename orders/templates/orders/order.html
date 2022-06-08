@@ -8,6 +8,81 @@
 
 {% block body %}
 <header class="header-site">
-
+    <div class="header-left">
+        <img src="{% static 'orders/images/pizzeria-logo.png' %}" alt="Logo de la pizzeria">
+    </div>
+    <div class="header-between">
+        <h1 id="food-name">Regular Pizza Cheese</h1>
+        <p>Categoria: <span id="category">PIZZA</span></p>
+    </div>
+    <div class="header-right" align="right">
+        <button>
+            <img src="{% static 'orders/icons/category.svg' %}" alt="Categoria">
+        </button>
+        <button>
+            <img src="{% static 'orders/icons/shopping_cart.svg' %}" alt="Categoria">
+        </button>
+    </div>
 </header>
+<section class="food-info">
+    <article class="information">
+        <div class="information-description">
+            <h3>Information</h3>
+            <p id="description">Hecha de peperoni, olivas negras y nuestras firma estilo italiano Pizza Sauce</p>
+        </div>
+        <div class="extra">
+            <button class="btn-add-toppings" id="btn-add-toppings">
+                <span>
+                    <img src="{% static 'orders/icons/add.svg' %}" alt="Agregar topping" height="18">
+                </span>
+                Add toppings
+            </button>
+            <div class="services">
+                <h3>Services</h3>
+                <div class="services-count">
+                    <button id="decrement">
+                        <img height="18" src="{% static 'orders/icons/minus.svg' %}" alt="Quitar cantidad">
+                    </button>
+                    <span id="quantity">01</span>
+                    <button id="increment">
+                        <img height="18" src="{% static 'orders/icons/add.svg' %}" alt="Agregar cantidad">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </article>
+    <div class="sizes" id="sizes">
+        <button id="btn-small-size">S</button>
+        <button id="btn-large-size">L</button>
+    </div>
+    <div class="price-buy">
+        <div class="price">
+            <h3>Price</h3>
+            <span id="prices">$60.00</span>
+        </div>
+        <button class="add-to-cart">
+            <span>
+                <img src="{% static 'orders/icons/add_shopping_cart.svg' %}" alt="agregar al carrtio">
+            </span>
+            Add to cart
+        </button>
+    </div>
+    <article class="food-container">
+        <div class="arrows">
+            <button class="arrow" id="arrow-left">
+                <img src="{% static 'orders/icons/arrow_left.svg' %}" alt="Avanza hacia la izquierda">
+            </button>
+            <button class="arrow" id="arrow-right">
+                <img src="{% static 'orders/icons/arrow_right.svg' %}" alt="Avanza hacia la izquierda">
+            </button>
+        </div>
+        <div class="food-list">
+            <img id="food-image" src="media/orders/images/food/pizza-pineapple.png" alt="Pizza de agua">
+        </div>
+    </article>
+</section>
 {% endblock body %}
+
+{% block scripts %}
+<script src="{% static 'orders/order.js' %}"></script>
+{% endblock scripts %}
