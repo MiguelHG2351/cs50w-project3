@@ -25,6 +25,7 @@
     </div>
 </header>
 <section class="food-info">
+    <a href="{% url 'register' %}">login</a>
     <article class="information">
         <div class="information-description">
             <h3>Information</h3>
@@ -60,7 +61,7 @@
             <h3>Price</h3>
             <span id="prices">$60.00</span>
         </div>
-        <button class="add-to-cart">
+        <button class="add-to-cart" id="add-card-btn">
             <span>
                 <img src="{% static 'orders/icons/add_shopping_cart.svg' %}" alt="agregar al carrtio">
             </span>

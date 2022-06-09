@@ -27,6 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const arrowLeft = document.querySelector('#arrow-left');
     const arrowRight = document.querySelector('#arrow-right');
 
+    // add to cart
+    const addCartBtn = document.querySelector('#add-cart-btn');
+
     decrementBtn.addEventListener('click', () => {
         const quantityValue = parseInt(quantity.innerHTML);
         
@@ -45,14 +48,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     arrowLeft.addEventListener('click', () => {
-        history.pushState(null, null, `/orders?food_id=${parseInt(queryParams().food_id) - 1}`)
-        document.dispatchEvent(routeChange());
+        if(parseInt(queryParams().food_id) > 1) {
+            history.pushState(null, null, `/orders?food_id=${parseInt(queryParams().food_id) - 1}`)
+            document.dispatchEvent(routeChange());
+        }
     });
     
     arrowRight.addEventListener('click', () => {
         history.pushState(null, null, `/orders?food_id=${parseInt(queryParams().food_id) + 1}`)
         document.dispatchEvent(routeChange());
     });
+
+    // addCartBtn.addEventListener('click', () => {
+    //     loca
+    // })
 })
 
 function checkFood() {
@@ -73,9 +82,12 @@ function setData() {
     .then((data) => {
         if(!data?.error) { 
             setFoodInfo(data.food_name, data.type_food, data.description, data.base_price, data.price_type, data.image);
+            localStorage.setItem('current-food', JSON.stringify(data));
         }
         else {
             console.log('No se encontro ningun producto')
+            window.history.pushState(null, null, `/orders?food_id=1`)
+            document.dispatchEvent(routeChange());
         }
     }).catch(err => console.error(err))
 }
@@ -100,5 +112,7 @@ function setFoodInfo(name, category, description, price, priceType, image) {
         $sizes.innerHTML = '';
         const $btnAddToppings = document.querySelector('#btn-add-toppings');
         $btnAddToppings?.remove();
+    } else {
+        
     }
 }

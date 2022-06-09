@@ -1,0 +1,20 @@
+{% extends 'orders/base.html'%}
+{% block title%} Registro de usuario {% endblock %}
+{% block body %}
+        <br><br>
+        <div class="row">
+            <div class="col-12 col-md-6 ofset-3  m-auto">
+                <div class="card">
+                    <div class="card-tittle text-center mt-2 text-dark">Registro</div>
+                    <div class="card-body">
+                        <form action="" method="post" class="text-dark">
+                            {% csrf_token %}
+                            {{form}}	
+                        <br>
+                        <input type="submit" value="Registrarse" class="btn btn-success  float-end">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}

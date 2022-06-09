@@ -1,5 +1,8 @@
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from django.contrib.auth import authenticate, login
+
+from orders.form import RegistroForm
 from .models import Food, Popular_Food, TYPES_FOOD as TYPE_LIST
 
 def type_food_list():
@@ -32,6 +35,25 @@ def orders_view(request):
         'foods':foods,
         'popular_foods':popular_food
     })
+
+
+def register(request):
+    data = {
+        'form': RegistroForm()
+    }
+    if request.method == 'POST':
+        formulario = RegistroForm(request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            username = formulario.cleaned_data['username']
+            password = formulario.cleaned_data['password1']
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return redirect(to='index')
+        else:
+            data['form'] = formulario
+    return render(request, 'registration/register.html', data)
+
 
 def api_food(request):
     category = request.GET.get('category').replace('"', '')
