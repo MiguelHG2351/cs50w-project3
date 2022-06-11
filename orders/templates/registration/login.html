@@ -1,5 +1,9 @@
 {% extends 'orders/base.html '%}
-{% block title%} Inicio de sesión  {% endblock %}
+{% load static %}
+{% block head %}
+<title>Inicio de sesión</title>
+<link rel="stylesheet" href="{% static 'orders/register.css' %}">
+{% endblock %}
 {% block js %} 
 {% endblock %}
 {% block body %}
@@ -13,7 +17,6 @@
                     {% csrf_token %}
                     {{form}}
                 <br>
-
                 <input type="submit" value="Ingresar" class="btn btn-success float-end">
                 </form>
             </div>

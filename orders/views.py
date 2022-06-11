@@ -1,9 +1,11 @@
+from datetime import datetime
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login
+from django.forms.models import model_to_dict
 
 from orders.form import RegistroForm
-from .models import Food, Popular_Food, TYPES_FOOD as TYPE_LIST
+from .models import Food, Food_Toppings, Popular_Food, Cart, TYPES_FOOD as TYPE_LIST, Toppings
 
 def type_food_list():
     type_list = []
@@ -26,15 +28,31 @@ def index(request):
 
 
 def orders_view(request):
-    popular_food = Popular_Food.objects.all()
-    foods = Food.objects.all()
-    # get data of foreign key
-    # a_popular_food = popular_food[0].food_id
-    # print(a_popular_food.food_name)
-    return render(request,'orders/order.html', {
-        'foods':foods,
-        'popular_foods':popular_food
-    })
+
+    if request.method == 'POST':
+        # cart = Cart(request)
+        food = Food.objects.get(id=request.POST['food_id'])
+        
+        create_cart = Cart.objects.create(
+            user=request.user,
+            food=food,
+            quantity=request.POST['quantity'],
+            total_price=request.POST['total_price'],
+            pub_date = datetime.now()
+        )
+        create_cart.save()
+
+        array_topping_ids = request.POST['toppings']
+        
+        if len(array_topping_ids) > 0:
+            for topping_id in array_topping_ids.split(','):
+                topping = Toppings.objects.get(pk=topping_id)
+                create_cart.toppings.add(topping)
+            print(request.POST['total_price'])
+
+        return JsonResponse({'success': True})
+
+    return render(request,'orders/order.html')
 
 
 def register(request):
@@ -68,10 +86,17 @@ def api_food(request):
         return JsonResponse({'error': 'Food not found'}, status=404)
     
 def api_food_2(request, food_id):
-    qs = Food.objects.filter(id=food_id)
-    food_list = list(qs.values())
-    if len(food_list) == 0:
-        return JsonResponse({'error': 'Food not found'}, status=404)
+    try:
+        food = Food.objects.get(pk=food_id)
+        toppings = []
+        if not (food.list_toppings is None):
+            toppings = list(food.list_toppings.toppings.values())
 
-    print(food_list[0]['list_toppings_id'])
-    return JsonResponse(food_list[0], safe=True)
+        food_item = {
+            **model_to_dict(food),
+            'image': food.image.url,
+            'list_toppings': toppings
+        }
+        return JsonResponse(food_item, safe=True)
+    except:
+        return JsonResponse({'error': 'Food not found'}, status=404)

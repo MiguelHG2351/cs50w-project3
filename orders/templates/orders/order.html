@@ -16,28 +16,68 @@
         <p>Categoria: <span id="category">PIZZA</span></p>
     </div>
     <div class="header-right" align="right">
-        <button>
+        <div class="btn-header orders">
             <img src="{% static 'orders/icons/category.svg' %}" alt="Categoria">
-        </button>
-        <button>
+            <div class="action-menu-container orders">
+                <ul class="action-menu">
+                    <li class="action-menu-item">
+                        <span class="img-count">
+                            <img src="/media/orders/images/food/Steak__Cheese.png" width="32" alt="keso">
+                            <span>Cantidad: <b>8</b></span>
+                        </span>
+                        <span>
+                            <button class="btn-order">In process</button>
+                        </span>
+                    </li>
+                    <li class="action-menu-item"></li>
+                    <li class="action-menu-item"></li>
+                    <li class="action-menu-item"></li>
+                </ul>
+            </div>
+        </div>
+        <div class="btn-header cart">
             <img src="{% static 'orders/icons/shopping_cart.svg' %}" alt="Categoria">
-        </button>
+            <div class="action-menu-container cart">
+                <ul class="action-menu">
+                    <li class="action-menu-item">
+                        <span class="img-count">
+                            <img src="/media/orders/images/food/Steak__Cheese.png" width="32" alt="keso">
+                            <span>Cantidad: <b>8</b></span>
+                        </span>
+                        <span>
+                            <button class="btn-order">Ordenar</button>
+                            <button class="btn-remove">Quitar</button>
+                        </span>
+                    </li>
+                    <li class="action-menu-item"></li>
+                    <li class="action-menu-item"></li>
+                    <li class="action-menu-item"></li>
+                </ul>
+            </div>
+        </div>
     </div>
 </header>
 <section class="food-info">
-    <a href="{% url 'register' %}">login</a>
+    {% comment %} <a href="{% url 'register' %}">
+        {{ user }}
+    login
+    </a> {% endcomment %}
     <article class="information">
         <div class="information-description">
             <h3>Information</h3>
             <p id="description">Hecha de peperoni, olivas negras y nuestras firma estilo italiano Pizza Sauce</p>
         </div>
         <div class="extra">
-            <button class="btn-add-toppings" id="btn-add-toppings">
-                <span>
-                    <img src="{% static 'orders/icons/add.svg' %}" alt="Agregar topping" height="18">
-                </span>
-                Add toppings
-            </button>
+            <div class="topping-container" id="toppings-container">
+                <button class="btn-add-toppings" id="btn-add-toppings">
+                    <span>
+                        <img src="{% static 'orders/icons/add.svg' %}" alt="Agregar topping" height="18">
+                    </span>
+                    Add toppings
+                </button>
+                <ul class="toppings-list" id="topping-list">
+                </ul>
+            </div>
             <div class="services">
                 <h3>Services</h3>
                 <div class="services-count">
@@ -53,15 +93,15 @@
         </div>
     </article>
     <div class="sizes" id="sizes">
-        <button id="btn-small-size">S</button>
-        <button id="btn-large-size">L</button>
+        <button class="btn-size" id="btn-small-size">S</button>
+        <button class="btn-size active" id="btn-large-size">L</button>
     </div>
     <div class="price-buy">
         <div class="price">
             <h3>Price</h3>
             <span id="prices">$60.00</span>
         </div>
-        <button class="add-to-cart" id="add-card-btn">
+        <button class="add-to-cart" id="add-cart-btn">
             <span>
                 <img src="{% static 'orders/icons/add_shopping_cart.svg' %}" alt="agregar al carrtio">
             </span>

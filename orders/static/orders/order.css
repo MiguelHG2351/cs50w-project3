@@ -1,8 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap');
 
 :root {
-    --red-pizza: rgb(245, 71, 73);
+    --red-pizza: #f54749;
+    --red-pizza-light: #f5474aca;
     --green-salad: #0c9536;
+    --green-salad-light: #0c9535ca;
     --shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.15);
 }
 
@@ -35,15 +37,77 @@ body {
     grid-column: 2 / 3;
 }
 
-.header-right > button {
+.btn-header {
     background-color: transparent;
     border: 1px solid #000;
     border-radius: 4px;
+    position: relative;
+    display: inline-block;
+    padding: 0 .25rem;
 }
 
-.header-right > button:hover {
+.btn-header:hover {
     background-color: var(--green-salad);
     border: 1px solid var(--green-salad);
+}
+
+.action-menu-container {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 10px;
+}
+
+.btn-header.cart:hover .action-menu-container.cart {
+    display: block;
+}
+
+.btn-header.orders:hover .action-menu-container.orders {
+    display: block;
+}
+
+.action-menu {
+    margin-top: 10px;
+    list-style: none;
+    padding-left: 0;
+    box-shadow: var(--shadow);
+    background-color: #fff;
+}
+
+.action-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 10px;
+    white-space: nowrap;
+}
+
+.img-count img {
+    vertical-align: middle;
+    border-radius: 4px;
+}
+
+.btn-order, .btn-remove {
+    border: none;
+    padding: .5rem 1rem;
+    color: #fff;
+    border-radius: 6px;
+}
+
+.btn-order {
+    background-color: var(--green-salad);
+}
+
+.btn-remove {
+    background-color: var(--red-pizza);
+}
+
+.btn-order:hover {
+    background-color: var(--green-salad-light);
+}
+
+.btn-remove:hover {
+    background-color: var(--red-pizza-light);
 }
 
 /* information */
@@ -57,6 +121,41 @@ body {
     justify-content: center;
     gap: 0 2rem;
     align-items: center;
+}
+
+.topping-container {
+    position: relative;
+}
+
+.topping-container:hover .toppings-list {
+    display: block;
+}
+
+.toppings-list {
+    display: none;
+    margin: 0;
+    position: absolute;
+    z-index: 12;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #dedede;
+    padding-left: 0;
+    list-style: none;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.topping-item {
+    padding: .5rem;
+    font-size: 12px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.topping-item.active {
+    background-color: var(--green-salad);
+    color: #fff;
 }
 
 .btn-add-toppings {
@@ -97,13 +196,17 @@ body {
     padding-top: 1rem;
 }
 
-.sizes button {
+.btn-size {
     width: 36px;
     height: 36px;
     background-color: transparent;
     border-radius: 50%;
     border: 1px solid #aaa;
     padding: 0;
+}
+
+.btn-size.active {
+    background-color: var(--green-salad);
 }
 
 .price-buy {
@@ -171,3 +274,8 @@ body {
 .food-list {
     overflow: hidden;
 }
+
+.hidden {
+    display: none;
+}
+

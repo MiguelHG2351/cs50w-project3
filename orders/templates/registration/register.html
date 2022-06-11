@@ -1,6 +1,11 @@
 {% extends 'orders/base.html'%}
-{% block title%} Registro de usuario {% endblock %}
+{% load static %}
+{% block head %}
+<title>Registro de usuario</title>
+<link rel="stylesheet" href="{% static 'orders/register.css' %}">
+{% endblock %}
 {% block body %}
+    <h1>Login: PIZZA</h1>
         <br><br>
         <div class="row">
             <div class="col-12 col-md-6 ofset-3  m-auto">
@@ -10,8 +15,10 @@
                         <form action="" method="post" class="text-dark">
                             {% csrf_token %}
                             {{form}}	
-                        <br>
-                        <input type="submit" value="Registrarse" class="btn btn-success  float-end">
+                            <br>
+                            <button type="submit" value="Registrarse" class="btn-send">
+                                Enviar
+                            </button>
                         </form>
                     </div>
                 </div>
