@@ -19,6 +19,77 @@ function toppingItemHandler() {
     }
 }
 
+function cartTemplate(name, image, count, price, id, foodId) {
+    const template = document.createElement('template');
+    template.innerHTML = `
+    <li class="action-menu-item">
+        <img src="${image}" width="48" alt="${name}"/>
+        <div class="container-temp">
+            <span class="img-count">
+                <div class="info-card-food">
+                    <p>${name}</p>
+                    <span>Cantidad: <b>${count}</b></span>
+                </div>
+            </span>
+            <span>
+                <button class="btn-order">Ordenar</button>
+                <button class="btn-remove">Quitar</button>
+            </span>
+        </div>
+    </li>
+    `;
+    const element = template.content.cloneNode(true)
+    const order = element.querySelector('.btn-order')
+    const remove = element.querySelector('.btn-remove')
+
+    remove.addEventListener('click', function() {
+        const formData = new FormData();
+        formData.append('food_id', foodId);
+        formData.append('action', 'remove')
+        formData.append('cart_id', id)
+
+        const csrf = getCookie('csrftoken');
+        formData.append('csrfmiddlewaretoken', csrf)
+
+        fetch('/orders/api/cart', {
+            method: 'POST',
+            body: formData
+        }).then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                remove.parentElement.parentElement.parentElement.remove()
+            } else {
+                console.log('Error al quitar del carrito')
+            }
+        })
+    })
+
+    order.addEventListener('click', function() {
+        const formData = new FormData();
+        formData.append('food_id', foodId)
+        formData.append('total_price', price)
+        formData.append('quantity', count)
+        formData.append('action', 'add')
+        const csrf = getCookie('csrftoken');
+        formData.append('csrfmiddlewaretoken', csrf)
+        formData.append('cart_id', id)
+
+        fetch('/orders/api/cart', {
+            method: 'POST',
+            body: formData
+        }).then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                console.log(remove.parentElement.parentElement.parentElement)
+                remove.parentElement.parentElement.parentElement.remove()
+            } else {
+                console.log('Error al quitar del carrito')
+            }
+        })
+    })
+
+    return element;
+}
 
 const routeChange = () => new CustomEvent('routeChange', {
     detail: {
@@ -101,6 +172,8 @@ document.addEventListener('DOMContentLoaded', () => {
         let arrayToppings = [];
         const formData = new FormData();
         const csrf = getCookie('csrftoken');
+        const controller = new AbortController();
+        const signal = controller.signal;
         // debugger
         let totalPrice = quantity.innerHTML - 0.0;
         if(currentFood.price_type !== 'normal') {
@@ -113,6 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const $toppingList = document.querySelectorAll('.topping-item.active');
             if($toppingList.length < 1) {
                 alert(`Selecciona minimo ${currentFood.max_topping} topping`)
+                controller.abort()
                 location.reload()
             }
             arrayToppings = Array.prototype.map.call($toppingList, item => item.dataset.toppingId - 0)
@@ -122,20 +196,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log(price.price - 0)
             })
         }
-        console.log(totalPrice)
         
+        console.log('Fetching data...')
         formData.append('csrfmiddlewaretoken', csrf)
         formData.append('food_id', currentFood.id)
         formData.append('quantity', quantity.innerHTML - 0)
         formData.append('total_price', totalPrice)
         formData.append('toppings', arrayToppings)
+        formData.append('action-cart', 'add')
+        console.log('No fetch')
         fetch('/orders', {
             method: 'POST',
             credentials: 'same-origin',
-            body: formData
+            body: formData,
+            signal
         }).then(res => res.json())
         .then((data) => {
-            console.log(data)
+            console.log(':0...')
+            if(data.success) {
+                setCartInfo()
+            } else {
+                alert('Error al agregar al carrito')
+            }
         }).catch(err => console.error(err))
     })
 
@@ -154,12 +236,21 @@ function checkFood() {
     }
 }
 
-function setData() {
+async function setData() {
     const params = queryParams()
     // console.log(`Estas buscando una ${params.food_name} en el catalogo ${params.type}`)
-    fetch(`/orders/api/food/${params.food_id}`)
-    .then(res => res.json())
-    .then((data) => {
+    try {
+        // arrow food
+        const arrowLeft = document.querySelector('#arrow-left');
+        const arrowRight = document.querySelector('#arrow-right');
+        arrowLeft.classList.add('disabled');
+        arrowRight.classList.add('disabled');
+        const food = await fetch(`/orders/api/food/${params.food_id}`)
+        const data = await food.json()
+        
+        arrowLeft.classList.remove('disabled');
+        arrowRight.classList.remove('disabled');
+        
         const attemps = localStorage.getItem('attemps') - 0;
         // console.log(data)
         if(!data?.error) { 
@@ -173,12 +264,28 @@ function setData() {
             window.history.pushState(null, null, `/orders?food_id=1`)
             document.dispatchEvent(routeChange());
         }
-    }).catch(err => console.error(err))
+    } catch (error) {
+        console.error(error)
+    }
 }
 // data.append('csrfmiddlewaretoken', "Zts8twwrfxkot1UHsWYDx4XXVHicssjwXLcoe6dyJGYKJfr7yTzv14yTOCbTg7F7");
 
+async function setCartInfo() {
+    try {
+        const cart = await fetch('/orders/api/cart')
+        const cartList = await cart.json()
+        const $cartList = document.querySelector('#cart-list');
+        $cartList.innerHTML = ''
+        for(const cartItem of cartList) {
+            console.log(cartItem)
+            $cartList.appendChild(cartTemplate(cartItem.food, cartItem.image, cartItem.quantity, cartItem.total_price, cartItem.id, cartItem.food_id))
+        }
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 function setFoodInfo(name, category, description, price, priceType, image, toppingList) {
-    'use strict';
     const $foodName = document.querySelector('#food-name');
     const $category = document.querySelector('#category');
     const $description = document.querySelector('#description');
@@ -186,6 +293,8 @@ function setFoodInfo(name, category, description, price, priceType, image, toppi
     const $foodImage = document.querySelector('#food-image');
     const quantity = document.querySelector('#quantity');
     const $toppingList = document.querySelector('#topping-list');
+
+    document.title = `${name} - ${category}`;
     
     $foodName.innerHTML = name;
     $category.innerHTML = category;
@@ -208,11 +317,8 @@ function setFoodInfo(name, category, description, price, priceType, image, toppi
     
     const $sizes = document.querySelector('#sizes');
     const $toppingsContainer = document.querySelector('#toppings-container');
-    if(priceType == 'normal') {
-        priceType == 'normal' ? $sizes.classList.add('hidden'): null
-    } else {
-        // $sizes.classList.contains('hidden') ? $sizes.classList.replace('hidden', '') : null
-        priceType == 'normal' ? $sizes.classList.add('hidden') : $sizes.classList.remove('hidden')
-        toppingList.length === 0 ? $toppingsContainer.classList.add('hidden') :  $toppingsContainer.classList.remove('hidden')
-    }
+    
+    priceType == 'normal' ? $sizes.classList.add('hidden') : $sizes.classList.remove('hidden')
+    toppingList.length === 0 ? $toppingsContainer.classList.add('hidden') :  $toppingsContainer.classList.remove('hidden')
+    setCartInfo()
 }

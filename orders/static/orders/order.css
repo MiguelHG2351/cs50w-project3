@@ -13,6 +13,22 @@ body {
     /* background-color: #f5f4f6; */
 }
 
+.disabled {
+    pointer-events: none;
+    position: relative;
+}
+.disabled::before {
+    cursor: not-allowed;
+    border-radius: 50%;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
 .header-site {
     display: grid;
     grid-template-columns: repeat(2, minmax(100px, 1fr));
@@ -56,6 +72,9 @@ body {
     position: absolute;
     top: 100%;
     right: 10px;
+    z-index: 10;
+    max-height: 500px;
+    overflow-y: auto;
 }
 
 .btn-header.cart:hover .action-menu-container.cart {
@@ -75,16 +94,52 @@ body {
 }
 
 .action-menu-item {
+    /* display: grid;
+    grid-template-columns:  minmax(calc(48 + 0.25rem + 12ch), 1fr) 1fr; */
     display: flex;
     align-items: center;
-    gap: 20px;
+    align-items: center;
+    gap: 10px;
     padding: 10px;
     white-space: nowrap;
+    justify-content: center;
 }
 
-.img-count img {
+.action-menu-item img {
     vertical-align: middle;
     border-radius: 4px;
+}
+
+.img-count {
+    display: flex;
+    align-items: center;
+    gap: 0 .25rem;
+}
+
+.container-temp > span {
+    margin-top: .25rem;
+    display: block;
+    text-align: left;
+}
+
+.info-card-food {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.info-card-food p {
+    margin: 0;
+}
+
+.info-card-food span {
+    text-align: left;
+    font-size: 12px;
+}
+
+.info-card-food span b {
+    font-size: 12px;
 }
 
 .btn-order, .btn-remove {

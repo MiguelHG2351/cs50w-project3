@@ -74,6 +74,9 @@ class Cart(models.Model):
     pub_date = models.DateTimeField('date published')
 
 class Order(models.Model):
-    cart_item = models.ForeignKey(Cart, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    food = models.ForeignKey(Food, on_delete=models.CASCADE)
+    toppings = models.ManyToManyField(Toppings)
+    quantity = models.IntegerField()
+    price = models.DecimalField(max_digits=6, decimal_places=2)
     status = models.CharField(choices=TYPES_ORDER, max_length=64, default='pending')
-    pub_date = models.DateTimeField('date published')
