@@ -22,7 +22,7 @@ function toppingItemHandler() {
 function cartTemplate(name, image, count, price, id, foodId) {
     const template = document.createElement('template');
     template.innerHTML = `
-    <li class="action-menu-item">
+    <li class="action-menu-item-cart">
         <img src="${image}" width="48" alt="${name}"/>
         <div class="container-temp">
             <span class="img-count">
@@ -87,6 +87,27 @@ function cartTemplate(name, image, count, price, id, foodId) {
             }
         })
     })
+
+    return element;
+}
+
+function orderTemplate(name, image, count, status) {
+    const template = document.createElement('template');
+    template.innerHTML = `
+    <li class="action-menu-item">
+        <span class="img-count">
+            <img src="${image}" width="48" alt="keso">
+            <div class="info-card-food">
+                <p>${name}</p>
+                <span>Cantidad: <b>${count}</b></span>
+            </div>
+        </span>
+        <span>
+            <button class="btn-order">${status}</button>
+        </span>
+    </li>
+    `;
+    const element = template.content.cloneNode(true)
 
     return element;
 }
@@ -204,15 +225,22 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('total_price', totalPrice)
         formData.append('toppings', arrayToppings)
         formData.append('action-cart', 'add')
-        console.log('No fetch')
+        
+        addCartBtn.classList.add('disabled');
         fetch('/orders', {
             method: 'POST',
             credentials: 'same-origin',
             body: formData,
             signal
-        }).then(res => res.json())
+        }).then(res => {
+            if(res.status == 403) {
+                window.location.href = '/auth/login'
+                throw new Error('Error al agregar al carrito')
+            }
+            return res.json();
+        })
         .then((data) => {
-            console.log(':0...')
+            addCartBtn.classList.remove('disabled');
             if(data.success) {
                 setCartInfo()
             } else {
@@ -274,11 +302,35 @@ async function setCartInfo() {
     try {
         const cart = await fetch('/orders/api/cart')
         const cartList = await cart.json()
-        const $cartList = document.querySelector('#cart-list');
-        $cartList.innerHTML = ''
-        for(const cartItem of cartList) {
-            console.log(cartItem)
-            $cartList.appendChild(cartTemplate(cartItem.food, cartItem.image, cartItem.quantity, cartItem.total_price, cartItem.id, cartItem.food_id))
+        if(cartList?.error) {
+            console.log('No estas loggeado')
+        } else {
+            const $cartList = document.querySelector('#cart-list');
+            $cartList.innerHTML = ''
+            for(const cartItem of cartList) {
+                console.log(cartItem)
+                $cartList.appendChild(cartTemplate(cartItem.food, cartItem.image, cartItem.quantity, cartItem.total_price, cartItem.id, cartItem.food_id))
+            }
+        }
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+async function setOrderInfo() {
+    try {
+        console.log('ordenes')
+        const order = await fetch('/orders/api/orders')
+        const orderList = await order.json()
+        if(orderList?.error) {
+            console.log('No estas loggeado')
+        } else {
+            const $orderList = document.querySelector('#order-list');
+            $orderList.innerHTML = ''
+            for(const orderItem of orderList) {
+                console.log(orderItem)
+                $orderList.appendChild(orderTemplate(orderItem.food, orderItem.image, orderItem.quantity, orderItem.status))
+            }
         }
     } catch (error) {
         console.error(error)
@@ -321,4 +373,5 @@ function setFoodInfo(name, category, description, price, priceType, image, toppi
     priceType == 'normal' ? $sizes.classList.add('hidden') : $sizes.classList.remove('hidden')
     toppingList.length === 0 ? $toppingsContainer.classList.add('hidden') :  $toppingsContainer.classList.remove('hidden')
     setCartInfo()
+    setOrderInfo()
 }

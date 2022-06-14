@@ -33,6 +33,9 @@ def orders_view(request):
         # cart = Cart(request)
         print(request.POST)
         if(request.POST['action-cart'] == 'add'):
+            # check if user is logged
+            if not request.user.is_authenticated:
+                return JsonResponse({'success': False, 'error': 'User not logged'}, status=403)
             food = Food.objects.get(pk=request.POST['food_id'])
             
             create_cart = Cart.objects.create(
@@ -138,4 +141,22 @@ def api_cart(request):
         return JsonResponse(item_cart_list, safe=False)
     except Exception as e:
         print(e)
-        return JsonResponse({'error': 'Food not found'}, status=404)
+        return JsonResponse({'error': 'Food not found'}, status=403)
+
+def api_orders(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'success': False, 'error': 'User not logged'}, status=403)
+
+    # regresar un json con los datos
+    orders = Order.objects.filter(user=request.user)
+    order_list = list()
+    for order in orders:
+        order_list.append({
+            'food': order.food.food_name,
+            'quantity': order.quantity,
+            'status': order.status,
+            'image': order.food.image.url
+        })
+    return JsonResponse(order_list, safe=False)
+
+            

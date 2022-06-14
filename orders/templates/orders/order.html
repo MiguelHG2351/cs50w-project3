@@ -19,19 +19,8 @@
         <div class="btn-header orders">
             <img src="{% static 'orders/icons/category.svg' %}" alt="Categoria">
             <div class="action-menu-container orders">
-                <ul class="action-menu">
-                    <li class="action-menu-item">
-                        <span class="img-count">
-                            <img src="/media/orders/images/food/Steak__Cheese.png" width="48" alt="keso">
-                            <div class="info-card-food">
-                                <p>Silician Pizza</p>
-                                <span>Cantidad: <b>8</b></span>
-                            </div>
-                        </span>
-                        <span>
-                            <button class="btn-order">In process</button>
-                        </span>
-                    </li>
+                <ul class="action-menu" id="order-list">
+                    
                 </ul>
             </div>
         </div>
@@ -97,15 +86,15 @@
         </button>
     </div>
     <article class="food-container">
-        <div class="arrows">
-            <button class="arrow" id="arrow-left">
-                <img src="{% static 'orders/icons/arrow_left.svg' %}" alt="Avanza hacia la izquierda">
-            </button>
-            <button class="arrow" id="arrow-right">
-                <img src="{% static 'orders/icons/arrow_right.svg' %}" alt="Avanza hacia la izquierda">
-            </button>
-        </div>
         <div class="food-list">
+            <div class="arrows">
+                <button class="arrow" id="arrow-left">
+                    <img src="{% static 'orders/icons/arrow_left.svg' %}" alt="Avanza hacia la izquierda">
+                </button>
+                <button class="arrow" id="arrow-right">
+                    <img src="{% static 'orders/icons/arrow_right.svg' %}" alt="Avanza hacia la izquierda">
+                </button>
+            </div>
             <img id="food-image" src="media/orders/images/food/pizza-pineapple.png" alt="Pizza de agua">
         </div>
     </article>

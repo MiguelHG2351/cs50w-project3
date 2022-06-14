@@ -26,7 +26,12 @@
         </p>
     </div>
     <div class="header-profile">
-        <img class="profile-image" src="https://randomuser.me/api/portraits/men/89.jpg" alt="Jimmie King" width="42" >
+        <h3>
+            {% if user.first_name %}
+            Hola, 
+            {{ user.first_name }}
+            {% endif %}
+        </h3>
     </div>
 </header>
 <main>
