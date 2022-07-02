@@ -18,6 +18,7 @@ def type_food_list():
 def index(request):
     popular_food = Popular_Food.objects.all()
     foods = Food.objects.all()
+    print(foods)
     # get data of foreign key
     # a_popular_food = popular_food[0].food_id
     # print(a_popular_food.food_name)
